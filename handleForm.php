@@ -15,7 +15,7 @@ use AmoCRM\Models\TagModel;
 
 if (isset($_POST))
 {
-
+    session_start();
     $accessToken = $_SESSION['accessToken'];
     $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
     $apiClient->setAccessToken($accessToken)->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
