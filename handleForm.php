@@ -34,10 +34,9 @@ if (isset($_POST))
             preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
             if ($matches['value'] !== null)
             {
-                putenv(trim($line));
+                $_ENV[$matches['key']] = trim($matches['value']);
             }
         }
-
         $state = bin2hex(random_bytes(16));
         $_SESSION['state'] = $state;
         $clientId = $_ENV['CLIENT_ID'];
@@ -51,6 +50,7 @@ if (isset($_POST))
         ]);
 
         header('Location: ' . $authorizationUrl);
+        exit;
     }
 
 
