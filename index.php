@@ -8,7 +8,8 @@
 </head>
 
 <body style="height: 100%;">
-    <form action="handleForm.php" method="post" style="height: 100%; margin: auto; width: 300px; display:flex; flex-direction: column; justify-content: center;">
+    <form action="handleForm.php" method="post"
+     style="height: 100%; margin: auto; width: 300px; display:flex; flex-direction: column; justify-content: center;">
         <div style="margin-bottom: 10px;">
             <label for="name">Имя</label>
             <input type="text" name="name" id="name" required/>

@@ -1,23 +1,68 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
+use AmoCRM\Models\TagModel;
 use AmoCRM\Models\LeadModel;
 use AmoCRM\Models\ContactModel;
+use AmoCRM\Client\AmoCRMApiClient;
+use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
-use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\RadiobuttonCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MultitextCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\RadiobuttonCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\RadiobuttonCustomFieldValueCollection;
-use AmoCRM\Models\CustomFieldsValues\ValueModels\RadiobuttonCustomFieldValueModel;
-use AmoCRM\Models\TagModel;
+
+if (!isset($_SESSION))
+{
+    session_start();
+}
 
 if (isset($_POST))
 {
 
-    $accessToken = $_SESSION['accessToken'];
-    $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+    if (!isset($_GET['code']))
+    {
+        $env = file_get_contents('.env');
+        $lines = explode("\n", $env);
+
+        foreach ($lines as $line)
+        {
+            preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
+            if ($matches['value'] !== null)
+            {
+                putenv(trim($line));
+            }
+        }
+
+        $state = bin2hex(random_bytes(16));
+        $_SESSION['state'] = $state;
+        $clientId = $_ENV['CLIENT_ID'];
+        $clientSecret = $_ENV['CLIENT_SECRET'];
+        $redirectUri = $_ENV['REDIRECT_URI'];
+        $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+
+        $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
+            'state' => $state,
+            'mode' => 'post_message', //post_message - редирект произойдет в открытом окне, popup - редирект произойдет в окне родителе
+        ]);
+
+        header('Location: ' . $authorizationUrl);
+    }
+
+
+    if ($_GET['state'] !== $_SESSION['state'] || empty($_GET['state']))
+    {
+        unset($_SESSION['state']);
+        header('Location: /');
+        exit;
+    }
+
+    $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
+    $apiClient = new AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
     $apiClient->setAccessToken($accessToken)->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
     $leadsService = $apiClient->leads();
