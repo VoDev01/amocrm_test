@@ -35,7 +35,7 @@ if (isset($_POST))
             $_ENV[$matches['key']] = trim($matches['value']);
         }
     }
-    
+
     $clientId = $_ENV['CLIENT_ID'];
     $clientSecret = $_ENV['CLIENT_SECRET'];
     $redirectUri = $_ENV['REDIRECT_URI'];
@@ -66,7 +66,7 @@ if (isset($_POST))
 
     $apiClient = new AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
 
-    $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
+    $accessToken = $apiClient->getOAuthClient()->setBaseDomain($_ENV['BASE_DOMAIN'])->getAccessTokenByCode($_GET['code']);
     $apiClient->setAccessToken($accessToken)->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
     $leadsService = $apiClient->leads();
