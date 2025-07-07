@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fde7dec94e599d44c28b4d1f6a705d6",
+    "content-hash": "ff9de3f7827e97dcf32f8891c9e45b23",
     "packages": [
         {
             "name": "amocrm/amocrm-api-library",
@@ -2011,12 +2011,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {
-        "php": "^8.1 <8.2"
-    },
-    "platform-dev": {},
+    "platform": [],
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

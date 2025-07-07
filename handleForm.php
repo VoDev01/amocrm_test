@@ -23,9 +23,22 @@ if (!isset($_SESSION))
 
 if (isset($_POST))
 {
-    $clientId = getenv('CLIENT_ID');
-    $clientSecret = getenv('CLIENT_SECRET');
-    $redirectUri = getenv('REDIRECT_URI');
+
+    $env = file_get_contents('.env');
+    $lines = explode("\n", $env);
+
+    foreach ($lines as $line)
+    {
+        preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
+        if ($matches['value'] !== null)
+        {
+            $_ENV[$matches['key']] = trim($matches['value']);
+        }
+    }
+    
+    $clientId = $_ENV['CLIENT_ID'];
+    $clientSecret = $_ENV['CLIENT_SECRET'];
+    $redirectUri = $_ENV['REDIRECT_URI'];
 
     if (!isset($_GET['code']))
     {

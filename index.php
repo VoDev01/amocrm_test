@@ -1,16 +1,3 @@
-<?php
-$env = file_get_contents('.env');
-$lines = explode("\n", $env);
-
-foreach ($lines as $line)
-{
-    preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
-    if ($matches['value'] !== null)
-    {
-        putenv(trim($line));
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
 
