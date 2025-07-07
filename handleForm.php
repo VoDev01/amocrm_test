@@ -23,26 +23,13 @@ if (!isset($_SESSION))
 
 if (isset($_POST))
 {
-    if (!isset($_ENV))
-    {
-        $env = file_get_contents('.env');
-        $lines = explode("\n", $env);
-
-        foreach ($lines as $line)
-        {
-            preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
-            if ($matches['value'] !== null)
-            {
-                $_ENV[$matches['key']] = trim($matches['value']);
-            }
-        }
-    }
     $clientId = $_ENV['CLIENT_ID'];
     $clientSecret = $_ENV['CLIENT_SECRET'];
     $redirectUri = $_ENV['REDIRECT_URI'];
-    
+
     if (!isset($_GET['code']))
     {
+
         $state = bin2hex(random_bytes(16));
         $_SESSION['state'] = $state;
         $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
