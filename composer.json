@@ -1,5 +1,6 @@
 {
     "require": {
-        "amocrm/amocrm-api-library": "^1.10"
+        "amocrm/amocrm-api-library": "^1.10",
+        "bitrix24/b24phpsdk": "^1.2"
     }
 }
