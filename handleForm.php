@@ -9,10 +9,13 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
+use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\RadiobuttonCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\TextCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MultitextCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\RadiobuttonCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\RadiobuttonCustomFieldValueCollection;
 
@@ -78,14 +81,14 @@ if (isset($_POST))
     $phoneModel->setFieldId(3727);
     $phoneModel->setValues(
         (new MultitextCustomFieldValueCollection())
-            ->add((new MultitextCustomFieldValueModel())->setValue($_POST['phone']))
+            ->add((new MultitextCustomFieldValueModel())->setEnumId(1775)->setValue($_POST['phone']))
     );
 
-    $commentModel = new MultitextCustomFieldValuesModel();
+    $commentModel = new TextCustomFieldValuesModel();
     $commentModel->setFieldId(5403);
     $commentModel->setValues(
-        (new MultitextCustomFieldValueCollection())
-            ->add((new MultitextCustomFieldValueModel())->setValue($_POST['comment']))
+        (new TextCustomFieldValueCollection())
+            ->add((new TextCustomFieldValueModel())->setValue($_POST['comment']))
     );
 
     $sourceModel = new RadiobuttonCustomFieldValuesModel();
