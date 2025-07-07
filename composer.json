@@ -1,5 +1,7 @@
 {
     "require": {
-        "amocrm/amocrm-api-library": "^1.10"
+        "amocrm/amocrm-api-library": "^1.10",
+        "paragonie/sodium_compat_ext_sodium": "^1.0",
+        "bitrix24/b24phpsdk": "^1.4"
     }
 }
