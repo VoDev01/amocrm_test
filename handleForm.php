@@ -23,25 +23,15 @@ if (!isset($_SESSION))
 
 if (isset($_POST))
 {
+    $clientId = $_ENV['CLIENT_ID'];
+    $clientSecret = $_ENV['CLIENT_SECRET'];
+    $redirectUri = $_ENV['REDIRECT_URI'];
 
     if (!isset($_GET['code']))
     {
-        $env = file_get_contents('.env');
-        $lines = explode("\n", $env);
 
-        foreach ($lines as $line)
-        {
-            preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
-            if ($matches['value'] !== null)
-            {
-                $_ENV[$matches['key']] = trim($matches['value']);
-            }
-        }
         $state = bin2hex(random_bytes(16));
         $_SESSION['state'] = $state;
-        $clientId = $_ENV['CLIENT_ID'];
-        $clientSecret = $_ENV['CLIENT_SECRET'];
-        $redirectUri = $_ENV['REDIRECT_URI'];
         $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
 
         $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
@@ -61,8 +51,9 @@ if (isset($_POST))
         exit;
     }
 
-    $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
     $apiClient = new AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+
+    $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
     $apiClient->setAccessToken($accessToken)->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
     $leadsService = $apiClient->leads();
