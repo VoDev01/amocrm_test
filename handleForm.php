@@ -68,6 +68,8 @@ if (isset($_POST))
     }
 
     $apiClient = new AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+    
+    var_dump($_GET['code']);
 
     $accessToken = $apiClient->getOAuthClient()->setBaseDomain($_ENV['BASE_DOMAIN'])->getAccessTokenByCode($_GET['code']);
     $apiClient->setAccessToken($accessToken)->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
