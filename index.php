@@ -7,7 +7,7 @@ foreach ($lines as $line)
     preg_match("/(?<key>[^#]+)\=(?<value>.+)/", $line, $matches);
     if ($matches['value'] !== null)
     {
-        $_ENV[$matches['key']] = trim($matches['value']);
+        putenv(trim($line));
     }
 }
 ?>
