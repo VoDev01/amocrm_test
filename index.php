@@ -1,3 +1,10 @@
+<?php
+require_once (__DIR__.'/src/crest.php');
+
+CRest::call('profile');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
 
